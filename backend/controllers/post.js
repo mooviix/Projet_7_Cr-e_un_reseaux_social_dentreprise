@@ -170,16 +170,20 @@ exports.updateCaption = async (req, res) => {
         message: "Unauthorized",
       });
     }
+    let myCloud;
 
-      const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
+if(req.body.image != null){
+       myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
       folder: "images_folder",
-    });
-    post.caption = req.body.caption;
-    
+    })
+
     post.image={
-          public_id: myCloud.public_id,
-          url: myCloud.secure_url,
-        }
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    }
+  }
+  if(req.body.caption) post.caption = req.body.caption;
+
     await post.save();
     res.status(200).json({
       success: true,
@@ -192,6 +196,7 @@ exports.updateCaption = async (req, res) => {
     });
   }
 };
+
 
 exports.commentOnPost = async (req, res) => {
   try {

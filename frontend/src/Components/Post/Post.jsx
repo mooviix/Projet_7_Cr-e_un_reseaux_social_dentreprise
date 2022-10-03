@@ -248,7 +248,7 @@ const Post = ({
               placeholder="Caption Here..."
               required
             /><br/>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
+            <input type="file" accept="image/*" onChange={handleImageChange} />
 
             <Button type="submit" variant="contained">
               Update
