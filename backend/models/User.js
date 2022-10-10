@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
       ref: "Post",
     },
   ],
-  followers: [  // clef etrangère sur user 
+  followers: [  
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

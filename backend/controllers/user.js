@@ -160,26 +160,26 @@ exports.deleteMyProfile = async (req, res) => {
     const following = user.following;
     const userId = user._id;
 
-    // Removing Avatar from cloudinary
+    
     await cloudinary.v2.uploader.destroy(user.avatar.public_id);
 
     await user.remove();
 
-    // Logout user after deleting profile
+    
 
     res.cookie("token", null, {
       expires: new Date(Date.now()),
       httpOnly: true,
     });
 
-    // Delete all posts of the user
+    
     for (let i = 0; i < posts.length; i++) {
       const post = await Post.findById(posts[i]);
       await cloudinary.v2.uploader.destroy(post.image.public_id);
       await post.remove();
     }
 
-    // Removing User from Followers Following
+    
     for (let i = 0; i < followers.length; i++) {
       const follower = await User.findById(followers[i]);
 
@@ -188,7 +188,7 @@ exports.deleteMyProfile = async (req, res) => {
       await follower.save();
     }
 
-    // Removing User from Following's Followers
+   
     for (let i = 0; i < following.length; i++) {
       const follows = await User.findById(following[i]);
 
@@ -197,7 +197,7 @@ exports.deleteMyProfile = async (req, res) => {
       await follows.save();
     }
 
-    // removing all comments of the user from all posts
+    
     const allPosts = await Post.find();
 
     for (let i = 0; i < allPosts.length; i++) {
@@ -210,7 +210,6 @@ exports.deleteMyProfile = async (req, res) => {
       }
       await post.save();
     }
-    // removing all likes of the user from all posts
 
     for (let i = 0; i < allPosts.length; i++) {
       const post = await Post.findById(allPosts[i]._id);
